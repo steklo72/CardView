@@ -7,37 +7,91 @@
 
 import SwiftUI
 
+
+
+
 struct ContentView: View {
-    let emojis = ["🤬", "🥵", "😬", "🥶","🤯","🫤","👩‍🏭","🧣","🕶️","👜","🐱"]
+    @State var emojis: [String] = ["🤬", "🥵", "😬", "🥶","🤯","🫤","👩‍🏭","🧣","🕶️","👜","🐱"]
+    let emojis1 = ["🌵", "🌴","🪴","🌹","🌸"]
+    let emojis2 = ["🌭","🍟","🥪","🌮","🥙","🥨"]
+    let emojis3 = ["🤬", "🥵", "😬", "🥶","🤯","🫤","👩‍🏭","🧣","🕶️","👜","🐱"]
+    
     @State var cardCount: Int = 4
     
     var body: some View {
-       
+    
         VStack{
+            Text("Memory")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+
+                
+                
             ScrollView{
-                cards}
+                cards
+            }
             Spacer()
                 cardCountAdjusters
+            tapMenu
         }
         .padding()
+        
     }
+        
     var cardCountAdjusters: some View {
         HStack {
             cardRemover
             Spacer()
             cardAdder
         }
-        .imageScale(.large)
+        
         .font(.largeTitle)
-        .padding(10)
+        
     }
     var cards: some View{
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 130)) ]) {
             ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index], isFaceUp: true)
+                CardView(content: emojis[index], isFaceUp: false)
             }.aspectRatio(2/3, contentMode: .fit)
             
         }.foregroundColor(.orange)
+    }
+    var tapMenu: some View {
+        HStack{
+            Button{
+                emojis = emojis1.shuffled()
+                    
+            } label: {
+                VStack {
+                    Image(systemName: "lasso")
+                    Text("Theme 1")
+                }
+            }
+            Spacer()
+            Button{
+                emojis = emojis2.shuffled()
+            } label: {
+                VStack {
+                    Image(systemName: "doc")
+                    Text("Theme 2")
+                }
+            }
+            Spacer()
+            Button{
+                emojis = emojis3.shuffled()
+            } label: {
+                VStack {
+                    Image(systemName: "lock.doc")
+                    Text("Theme 3")
+                }
+                
+                
+            }
+               
+        }.imageScale(.large)
+            
+            .padding(5)
     }
     
     func cardCountAdjuster (by offset: Int, symbol: String) -> some View {
@@ -67,7 +121,7 @@ struct ContentView: View {
 
 struct CardView: View {
     let content: String
-    @State var isFaceUp = true
+    @State var isFaceUp = false
     
     var body: some View {
         ZStack {
