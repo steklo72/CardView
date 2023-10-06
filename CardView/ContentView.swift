@@ -50,7 +50,7 @@ struct ContentView: View {
         
     }
     var cards: some View{
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 130)) ]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100)) ]) {
             ForEach(0..<cardCount, id: \.self) { index in
                 CardView(content: emojis[index], isFaceUp: false)
             }.aspectRatio(2/3, contentMode: .fit)
@@ -59,41 +59,57 @@ struct ContentView: View {
     }
     var tapMenu: some View {
         HStack{
-            Button{
-                emojis = emojis1.shuffled()
-                    
-            } label: {
-                VStack {
-                    Image(systemName: "lasso")
-                    Text("Theme 1")
-                }
-            }
-            Spacer()
-            Button{
-                emojis = emojis2.shuffled()
-            } label: {
-                VStack {
-                    Image(systemName: "doc")
-                    Text("Theme 2")
-                }
-            }
-            Spacer()
-            Button{
-                emojis = emojis3.shuffled()
-            } label: {
-                VStack {
-                    Image(systemName: "lock.doc")
-                    Text("Theme 3")
-                }
-                
-                
-            }
+            firstChoose
+            secondChoose
+            thirdChoose
+//            Button{
+//                emojis = emojis1.shuffled()
+//                    
+//            } label: {
+//                VStack {
+//                    Image(systemName: "lasso")
+//                    Text("Theme 1")
+//                }
+//            }
+//            Spacer()
+//            Button{
+//                emojis = emojis2.shuffled()
+//            } label: {
+//                VStack {
+//                    Image(systemName: "doc")
+//                    Text("Theme 2")
+//                }
+//            }
+//            Spacer()
+//            Button{
+//                emojis = emojis3.shuffled()
+//            } label: {
+//                VStack {
+//                    Image(systemName: "lock.doc")
+//                    Text("Theme 3")
+//                }
+//                
+//                
+//            }
                
         }.imageScale(.large)
             
             .padding(5)
     }
-    
+    func itemChoose (by offset: [String],  title: String, logo: String) -> some View {
+        Button {
+            emojis = offset
+        } label: {
+            VStack {
+                
+                Image(systemName: logo)
+                Text(title)
+                    
+            }
+            .padding(.trailing)
+            
+        }
+    }
     func cardCountAdjuster (by offset: Int, symbol: String) -> some View {
         Button {
             
@@ -103,6 +119,16 @@ struct ContentView: View {
         }
             .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
     }
+    var firstChoose: some View {
+        itemChoose(by: emojis1.shuffled(), title: "flowers", logo: "pencil.circle")
+    }
+    var secondChoose: some View {
+        itemChoose(by: emojis2.shuffled(), title: "eat", logo: "car")
+    }
+    var thirdChoose: some View {
+        itemChoose(by: emojis3.shuffled(), title: "angry", logo: "pencil")
+    }
+    
     var cardRemover: some View {
          cardCountAdjuster(by: -1, symbol: "minus.circle")
         
